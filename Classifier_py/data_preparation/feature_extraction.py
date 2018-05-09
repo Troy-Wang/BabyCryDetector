@@ -8,10 +8,13 @@ class FeatureExtraction:
     RATE = 44100
     FRAME = 512
 
-    def __init__(self):
-        pass
+    def __init__(self, label=None):
+        if label is None:
+            self.label = ''
+        else:
+            self.label = label
 
-    def feature_extraction(self, audio_data):
+    def extract_feature(self, audio_data):
         """
         extract features from audio data
         :param audio_data:
@@ -46,6 +49,7 @@ class FeatureExtraction:
         spectral_flatness = lrf.spectral_flatness(y=audio_data, hop_length=self.FRAME / 2)
         feature_spectral_flatness = np.mean(spectral_flatness)
 
-        features = pd.Series([feature_zcr, feature_ste, feature_steacc, feature_stezcr, feature_spectral_centroid,
-                              feature_spectral_bandwidth, feature_spectral_rolloff, feature_spectral_flatness])
-        return features.append(pd.Series(feature_mfcc), ignore_index=True)
+        features = np.append([feature_zcr, feature_ste, feature_steacc, feature_stezcr, feature_spectral_centroid,
+                              feature_spectral_bandwidth, feature_spectral_rolloff, feature_spectral_flatness],
+                             feature_mfcc)
+        return features, self.label

@@ -1,9 +1,6 @@
-import pandas as pd
-import librosa as lr
-import librosa.feature as lrf
+from data_preparation.data_preparation import DataPreparation
 
-audio_data, _ = lr.load('dataset/CryingBaby/1-22694-A.ogg', sr=44100)
-
-print audio_data.shape
-
-print lrf.zero_crossing_rate(audio_data)
+AUDIO_PATH = '/Users/troywang/Documents/ML/dataset'
+DATASET_SAVE_FILE = './data/dataset/dataset.txt'
+dp = DataPreparation(AUDIO_PATH, DATASET_SAVE_FILE)
+dp.prepare_data()
