@@ -13,6 +13,10 @@ class DataPreparation:
         pass
 
     def prepare_data(self):
+        """
+        prepare training dataset with feature extraction methods
+        :return:
+        """
         regex_path = re.compile(r'^[0-9]')
         audio_dir_path = [i for i in os.listdir(self.audio_path) if regex_path.match(i)]
 
