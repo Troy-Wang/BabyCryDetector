@@ -16,9 +16,8 @@ class ModelTraining:
     def __init__(self, X, y):
         self.X = X
         self.y = y
-        pass
 
-    def train_model(self):
+    def train_svm_model(self):
         # split data
         X_train, X_test, y_train, y_test = train_test_split(self.X, self.y, stratify=self.y, test_size=0.2,
                                                             random_state=0)

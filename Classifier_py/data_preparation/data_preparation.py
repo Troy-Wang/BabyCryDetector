@@ -10,7 +10,6 @@ class DataPreparation:
     def __init__(self, audio_path, dataset_save_file):
         self.audio_path = audio_path
         self.dataset_save_file = dataset_save_file
-        pass
 
     def prepare_data(self):
         """

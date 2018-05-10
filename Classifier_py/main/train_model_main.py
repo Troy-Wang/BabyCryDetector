@@ -4,7 +4,7 @@ from sklearn.externals import joblib
 
 
 def main():
-    model_save_file = './../data/model/model.pkl'
+    model_save_file = './../data/model/svm_model.pkl'
     data_save_file = './../data/dataset/dataset.txt'
 
     data = pd.read_csv(data_save_file, sep=',')
@@ -12,7 +12,7 @@ def main():
     y = data['label']
 
     mt = ModelTraining(X, y)
-    perf, model = mt.train_model()
+    perf, model = mt.train_svm_model()
 
     print perf
     joblib.dump(model, model_save_file)
