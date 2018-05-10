@@ -23,7 +23,7 @@ class ModelTraining:
         X_train, X_test, y_train, y_test = train_test_split(self.X, self.y, stratify=self.y, test_size=0.2,
                                                             random_state=0)
 
-        pipeline = Pipeline([('scaler', StandardScaler()), ('svm_clf', SVC(degree=3, coef0=1, C=5))])
+        pipeline = Pipeline([('scaler', StandardScaler()), ('svm_clf', SVC(degree=3))])
 
         param_grid = [{'svm_clf__kernel': ['linear', 'poly', 'rbf'],
                        'svm_clf__C': np.logspace(-2, 2, 5),
@@ -31,7 +31,7 @@ class ModelTraining:
                        'svm_clf__coef0': np.logspace(0, -3, 4, base=2)}]
 
         def myf1score(actual, prediction):
-            return f1_score(actual, prediction, average='binary')
+            return f1_score(actual, prediction, average='macro')
 
         my_f1_scorer = make_scorer(myf1score, greater_is_better=True)
 
