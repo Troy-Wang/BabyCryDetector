@@ -3,11 +3,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import f1_score
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import recall_score
 from sklearn.metrics import precision_score
-from sklearn.metrics import classification_report
 from sklearn.metrics import make_scorer
 import numpy as np
 
@@ -35,6 +35,34 @@ class ModelTraining:
         my_f1_scorer = make_scorer(myf1score, greater_is_better=True)
 
         estimator = GridSearchCV(pipeline, param_grid, cv=5, scoring=my_f1_scorer)
+
+        model = estimator.fit(X_train, y_train)
+
+        y_pred = model.predict(X_test)
+
+        perf = {'accuracy': accuracy_score(y_test, y_pred),
+                'recall': recall_score(y_test, y_pred, average='macro'),
+                'precision': precision_score(y_test, y_pred, average='macro'),
+                'f1': f1_score(y_test, y_pred, average='macro'),
+                }
+
+        return perf, model.best_estimator_
+
+    def train_rf_model(self):
+        X_train, X_test, y_train, y_test = train_test_split(self.X, self.y, stratify=self.y, test_size=0.2,
+                                                            random_state=0)
+
+        rf_clf = RandomForestClassifier(bootstrap=True, oob_score=True)
+
+        param_grid = [{'n_estimators': np.linspace(10, 50, 5, dtype=np.int),
+                       'max_features': np.linspace(4, 18, 8, dtype=np.int)}]
+
+        def myf1score(actual, prediction):
+            return f1_score(actual, prediction, average='macro')
+
+        my_f1_scorer = make_scorer(myf1score, greater_is_better=True)
+
+        estimator = GridSearchCV(rf_clf, param_grid, cv=5, scoring=my_f1_scorer)
 
         model = estimator.fit(X_train, y_train)
 
